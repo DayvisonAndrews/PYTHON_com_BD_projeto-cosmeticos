@@ -1,0 +1,47 @@
+CREATE TABLE Clientes (
+    ID_Cliente SERIAL PRIMARY KEY,
+    Nome_Cliente VARCHAR(100) NOT NULL,
+    CPF VARCHAR(11),
+    Telefone VARCHAR(15) UNIQUE,  -- Defini o telefone como único
+    Email VARCHAR(100),
+    Endereco_CEP VARCHAR(10),
+    Endereco_Rua VARCHAR(100),
+    Endereco_Numero VARCHAR(10),
+    Endereco_Complemento VARCHAR(50),
+    Endereco_PontoReferencia VARCHAR(100),
+    Endereco_Bairro VARCHAR(50),
+    Endereco_Cidade VARCHAR(50),
+    Endereco_Estado VARCHAR(2),
+    Endereco_Pais VARCHAR(50)
+);
+
+
+
+CREATE TABLE Produtos (
+    Cod_Produto SERIAL PRIMARY KEY,
+    Nome_Produto VARCHAR(255) NOT NULL,
+    Valor DECIMAL(10, 2) NOT NULL
+);
+
+
+
+CREATE TABLE Pedidos (
+    Cod_Pedido SERIAL PRIMARY KEY,
+    ID_Cliente INT NOT NULL,
+    Data_Pedido DATE NOT NULL,
+    Data_Pagamento DATE DEFAULT CURRENT_DATE,    -- Coloquei para preencher automaticamente para a data do dia atual
+    CONSTRAINT fk_cliente FOREIGN KEY (ID_Cliente) REFERENCES Clientes (ID_Cliente)
+);
+
+
+
+CREATE TABLE Pedido_Produtos (
+    Cod_Pedido INT NOT NULL,
+    Cod_Produto INT NOT NULL,
+    Quantidade INT NOT NULL,
+    Valor DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (Cod_Pedido, Cod_Produto),
+    CONSTRAINT fk_pedido FOREIGN KEY (Cod_Pedido) REFERENCES Pedidos (Cod_Pedido),
+    CONSTRAINT fk_produto FOREIGN KEY (Cod_Produto) REFERENCES Produtos (Cod_Produto)
+);
+
